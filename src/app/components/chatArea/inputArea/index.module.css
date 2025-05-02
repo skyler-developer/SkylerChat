@@ -1,0 +1,69 @@
+.inputArea {
+  margin-top: auto;
+  width: 60%;
+  height: 300px;
+  background-color: #ffffff;
+  padding: 20px;
+}
+
+/* .customSearch {
+  height: 100%;
+}
+
+.customSearch :global(.ant-input-wrapper) {
+  height: 100%;
+}
+
+.customSearch :global(.ant-input) {
+  height: 100%;
+  font-size: 16px;
+}
+
+.customSearch :global(.ant-input-search-button) {
+  height: 100% !important;
+  width: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+} */
+
+.inputWrapper {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+.textArea {
+  outline: none !important;
+}
+
+.textArea:focus {
+  box-shadow: none !important;
+  border-color: transparent !important;
+}
+
+/* 确保在悬停状态下也没有边框 */
+.textArea:hover {
+  border-color: transparent !important;
+}
+
+.sendButton {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.sendButton:global(.ant-btn-primary) {
+  background-color: #1677ff;
+}
+
+.sendButton:global(.ant-btn-primary:hover) {
+  background-color: #4096ff;
+}

@@ -1,0 +1,91 @@
+.qaArea {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  overflow-y: scroll;
+  width: 100%;
+}
+
+.qaAreaAnswer {
+  display: flex;
+  width: 80%;
+  justify-content: flex-start;
+}
+
+.qaAreaQuestion {
+  display: flex;
+  width: 80%;
+  justify-content: flex-end;
+}
+
+.qaAreaContent {
+  margin-right: 20px;
+}
+
+.qaAreaContentItemText {
+  font-size: 16px;
+  flex: 1;
+}
+
+/* Markdown 样式 */
+.qaAreaContentItemText h1,
+.qaAreaContentItemText h2,
+.qaAreaContentItemText h3,
+.qaAreaContentItemText h4,
+.qaAreaContentItemText h5,
+.qaAreaContentItemText h6 {
+  margin-top: 24px;
+  margin-bottom: 16px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.qaAreaContentItemText p {
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+
+.qaAreaContentItemText code {
+  padding: 0.2em 0.4em;
+  margin: 0;
+  font-size: 85%;
+  background-color: rgba(27, 31, 35, 0.05);
+  border-radius: 6px;
+}
+
+.qaAreaContentItemText pre {
+  padding: 16px;
+  overflow: auto;
+  font-size: 85%;
+  line-height: 1.45;
+  background-color: #f6f8fa;
+  border-radius: 6px;
+}
+
+.qaAreaContentItemText blockquote {
+  padding: 0 1em;
+  color: #6a737d;
+  border-left: 0.25em solid #dfe2e5;
+  margin: 0 0 16px 0;
+}
+
+.qaAreaContentItemText ul,
+.qaAreaContentItemText ol {
+  padding-left: 2em;
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+
+.qaAreaContentItemText li {
+  margin-top: 0.25em;
+}
+
+.qaAreaContentItemText a {
+  color: #0366d6;
+  text-decoration: none;
+}
+
+.qaAreaContentItemText a:hover {
+  text-decoration: underline;
+}
