@@ -6,9 +6,9 @@ import styles from "./index.module.css";
 export default function HeadCard() {
   return (
     <div className={styles.headCard}>
-      <Image src="/DeepSeekImg.webp" alt="headCard" style={{ width: 50, height: 50 }} />
+      <Image src="/DeepSeekImgf8f8f8.webp" alt="headCard" style={{ width: 50, height: 50 }} />
       <div className={styles.headCardTitle}>
-        Skyler-Chat
+        Skyler 智能助理
       </div>
     </div>
   );

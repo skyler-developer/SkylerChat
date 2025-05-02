@@ -15,8 +15,9 @@
 
 .qaAreaQuestion {
   display: flex;
+  flex-direction: row-reverse;
   width: 80%;
-  justify-content: flex-end;
+  /* justify-content: flex-end; */
 }
 
 .qaAreaContent {
@@ -25,7 +26,7 @@
 
 .qaAreaContentItemText {
   font-size: 16px;
-  flex: 1;
+  /* flex: 1; */
 }
 
 /* Markdown 样式 */
