@@ -1,6 +1,15 @@
 html,
 body {
-  width: 100vw;
-  height: 100vh;
-  background-color: #F5F5F5;
+    width: 100vw;
+    height: 100vh;
+    background-color: #f5f5f5;
+}
+.ant-layout-sider-children {
+    display: flex;
+    flex-direction: column;
+}
+
+/* 隐藏 Next.js 左下角调试图标 */
+nextjs-portal {
+    display: none;
 }

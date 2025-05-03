@@ -2,19 +2,21 @@
 
 import { useReplyStore } from "@/store/useReplyStore";
 import { useMessageStore } from "@/store/useMessageStore";
+import { useUserInfoStore } from "@/store/useUserInfoStore";
 
 export async function getResponse(
     messageParam: string,
     setReply: (reply: string) => void,
     setMessage: (message: { type: "question" | "answer"; content: string }[]) => void,
 ) {
+    const { username, uuid, isLogin } = useUserInfoStore.getState();
     try {
         const res = await fetch("/api/chat", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ message: messageParam }),
+            body: JSON.stringify({ message: messageParam, isLogin, username, uuid }),
         });
 
         if (!res.body) {

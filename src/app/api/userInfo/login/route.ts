@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
         if (token) {
             try {
                 // 验证 token
-                const decoded: any = jwt.verify(token, process.env.JWT_SECRET || "your_jwt_secret");
+                const decoded: any = jwt.verify(token, "skyler");
                 // 根据 token 中的 userName 查询用户信息
                 const [rows] = await db.query("SELECT * FROM userinfo WHERE username = ?", [
                     decoded.userName,
@@ -43,13 +43,15 @@ export async function POST(request: NextRequest) {
         const [rows] = await db.query("SELECT * FROM userinfo WHERE username = ?", [userName]);
         // 明确断言 rows 为 RowDataPacket[]
         const users = rows as any[];
+        console.log("用户信息", users);
         if (Array.isArray(users) && users.length > 0) {
             const user = users[0];
             // 用 bcrypt 验证密码
-            const isMatch = await bcrypt.compare(passWord, user.password);
+            const isMatch = await bcrypt.compare(passWord, user.passWord);
+            console.log("密码验证结果", isMatch);
             if (isMatch) {
                 // 生成 token，payload 可根据需要添加更多字段
-                const token = jwt.sign({ userName: user.username, uuid: user.uuid }, "skyler", {
+                const token = jwt.sign({ userName: user.userName, uuid: user.uuid }, "skyler", {
                     expiresIn: "7d",
                 });
                 return new Response(JSON.stringify({ success: true, user, token }), {

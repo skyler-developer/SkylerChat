@@ -30,8 +30,9 @@ export default function Page() {
                     if (data.success) {
                         // 如果获取用户信息成功，则更新用户信息到store
                         setLogin(true);
-                        setUsername(data.user.username);
+                        setUsername(data.user.userName);
                         setUuid(data.user.uuid);
+                        console.log("用户信息已存在", data.user);
                     } else {
                         // 如果获取用户信息失败，则清除localStorage中的token
                         localStorage.removeItem("token");

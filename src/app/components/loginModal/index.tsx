@@ -6,6 +6,8 @@ import { useUserInfoStore } from "@/store/useUserInfoStore";
 
 function LoginModal() {
     const {
+        isLogin,
+        setLogin,
         loginModalVisible,
         setLoginModalVisible,
         setUsername,
@@ -37,8 +39,10 @@ function LoginModal() {
                 const data = await res.json();
                 if (res.ok && data.token) {
                     localStorage.setItem("token", data.token);
+                    console.log("登录成功", data);
                     setLoginModalVisible(false);
                     // 你可以在这里设置用户信息到store等
+                    setLogin(true);
                 } else {
                     // 登录失败的处理
                 }
