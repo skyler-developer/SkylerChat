@@ -1,9 +1,27 @@
 import { NextRequest } from "next/server";
 import ollama from "ollama";
+import { db } from "../userInfo/router";
 
 export async function POST(request: NextRequest) {
     try {
-        const { message } = await request.json();
+        const { message, userName, sessionId } = await request.json();
+
+        let rows;
+        try {
+            // 查询 sessionrecords 表
+            [rows] = await db.query(
+                "SELECT * FROM sessionrecords WHERE userName = ? AND sessionId = ?",
+                [userName, sessionId],
+            );
+        } catch (dbError) {
+            console.error("Database query error:", dbError);
+            return new Response(JSON.stringify({ error: "数据库查询出错" }), {
+                status: 500,
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+        }
 
         const encoder = new TextEncoder();
         const stream = new ReadableStream({
