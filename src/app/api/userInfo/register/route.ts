@@ -1,5 +1,7 @@
 import { db } from "../router";
 import { NextRequest, NextResponse } from "next/server";
+import bcrypt from "bcrypt";
+import { v4 as uuidv4 } from "uuid";
 
 export async function POST(req: NextRequest) {
     const { username, password } = await req.json();
@@ -20,10 +22,15 @@ export async function POST(req: NextRequest) {
         if (rows.length > 0) {
             return NextResponse.json({ message: "User already exists." }, { status: 409 });
         }
-        // 插入新用户
-        await db.query("INSERT INTO userinfo (username, password) VALUES (?, ?)", [
+        // 生成用户唯一 uuid
+        const userId = uuidv4();
+        // 插入新用户前，先加密密码
+        const saltRounds = 10;
+        const hashedPassword = await bcrypt.hash(password, saltRounds);
+        await db.query("INSERT INTO userinfo (uuid, username, password) VALUES (?, ?, ?)", [
+            userId,
             username,
-            password,
+            hashedPassword,
         ]);
         return NextResponse.json({ message: "User registered successfully." }, { status: 201 });
     } catch (error) {

@@ -73,7 +73,6 @@ function LoginModal() {
             <Modal
                 title={loginOption ? "登录" : "注册"}
                 open={loginModalVisible}
-                // onOk={handleOk}
                 onCancel={handleCancel}
                 footer={[
                     <Button key="back" onClick={() => handleLoginOption(!loginOption)}>
