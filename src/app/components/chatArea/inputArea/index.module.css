@@ -1,9 +1,11 @@
 .inputArea {
-  margin-top: auto;
-  width: 60%;
-  height: 300px;
-  background-color: #ffffff;
-  padding: 20px;
+    margin-top: auto;
+
+    width: 60%;
+    height: 200px;
+    background-color: #ffffff;
+    /* background-color: red; */
+    padding: 20px;
 }
 
 /* .customSearch {
@@ -28,42 +30,46 @@
 } */
 
 .inputWrapper {
-  position: relative;
-  height: 100%;
-  width: 100%;
+    display: flex;
+    flex-direction: column;
+    /* height: 100%; */
+    width: 100%;
+    background-color: #f8f8f8;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 .textArea {
-  outline: none !important;
+    background-color: transparent !important;
+    outline: none !important;
 }
 
 .textArea:focus {
-  box-shadow: none !important;
-  border-color: transparent !important;
+    box-shadow: none !important;
+    border-color: transparent !important;
 }
 
 /* 确保在悬停状态下也没有边框 */
 .textArea:hover {
-  border-color: transparent !important;
+    border-color: transparent !important;
 }
 
 .sendButton {
-  position: absolute;
-  right: 10px;
-  bottom: 10px;
-  width: 40px;
-  height: 40px;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
+    position: absolute;
+    /* right: 10px; */
+    /* bottom: 10px; */
+    bottom: 0;
+    right: 0;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border-radius: 50%;
 }
 
 .sendButton:global(.ant-btn-primary) {
-  background-color: #1677ff;
+    background-color: #1677ff;
 }
 
 .sendButton:global(.ant-btn-primary:hover) {
-  background-color: #4096ff;
+    background-color: #4096ff;
 }
