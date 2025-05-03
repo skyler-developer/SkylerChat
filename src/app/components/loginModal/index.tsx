@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { Modal, Input, Button } from "antd";
-import { useLoginStore } from "@/store/useLoginStore";
+import { useUserInfoStore } from "@/store/useUserInfoStore";
 
 function LoginModal() {
     const {
@@ -14,13 +14,9 @@ function LoginModal() {
         password,
         loginOption,
         setLoginOption,
-        loginError,
-        setLoginError,
-        loginSuccess,
-        setLoginSuccess,
         loginLoading,
         setLoginLoading,
-    } = useLoginStore();
+    } = useUserInfoStore();
 
     const showModal = () => {
         setLoginModalVisible(true);
@@ -29,7 +25,29 @@ function LoginModal() {
     const handleOk = async () => {
         console.log("loginOption username password");
         console.log(loginOption, username, password);
-        if (!loginOption) {
+        if (loginOption) {
+            // 登录
+            setLoginLoading(true);
+            try {
+                const res = await fetch("/api/userInfo/login", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ userName: username, passWord: password }),
+                });
+                const data = await res.json();
+                if (res.ok && data.token) {
+                    localStorage.setItem("token", data.token);
+                    setLoginModalVisible(false);
+                    // 你可以在这里设置用户信息到store等
+                } else {
+                    // 登录失败的处理
+                }
+            } catch (e) {
+                // 网络或其他错误处理
+            } finally {
+                setLoginLoading(false);
+            }
+        } else {
             // 注册
             setLoginLoading(true);
             console.log("注册请求", { username, password });
@@ -41,19 +59,14 @@ function LoginModal() {
                 });
                 const data = await res.json();
                 if (res.status === 201) {
-                    setLoginSuccess("注册成功，请登录");
                     setLoginModalVisible(false);
                     setLoginOption(true); // 切换到登录
                 } else {
-                    setLoginError(data.message || "注册失败");
                 }
             } catch (e) {
-                setLoginError("注册请求异常");
             } finally {
                 setLoginLoading(false);
             }
-        } else {
-            setLoginModalVisible(false);
         }
     };
 

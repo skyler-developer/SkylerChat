@@ -7,31 +7,28 @@ interface LoginStore {
     setUsername: (username: string) => void;
     password: string;
     setPassword: (password: string) => void;
-    loginError: string;
-    setLoginError: (error: string) => void;
-    loginSuccess: string;
-    setLoginSuccess: (success: string) => void;
+    uuid: string;
+    setUuid: (uuid: string) => void;
     loginLoading: boolean;
     setLoginLoading: (loading: boolean) => void;
     loginModalVisible: boolean;
     setLoginModalVisible: (visible: boolean) => void;
 
-    // true为登录，false为注册
-    loginOption: boolean;
-    setLoginOption: (option: boolean) => void;
+    // true为登录，false为注册，null为修改密码
+    loginOption: boolean | null;
+    setLoginOption: (option: boolean | null) => void;
 }
 
-export const useLoginStore = create<LoginStore>((set) => ({
+export const useUserInfoStore = create<LoginStore>((set) => ({
     isLogin: false,
     setLogin: (isLogin) => set({ isLogin }),
     username: "",
     setUsername: (username) => set({ username }),
     password: "",
     setPassword: (password) => set({ password }),
+    uuid: "",
+    setUuid: (uuid) => set({ uuid }),
     loginError: "",
-    setLoginError: (error) => set({ loginError: error }),
-    loginSuccess: "",
-    setLoginSuccess: (success) => set({ loginSuccess: success }),
     loginLoading: false,
     setLoginLoading: (loading) => set({ loginLoading: loading }),
     loginModalVisible: false,
