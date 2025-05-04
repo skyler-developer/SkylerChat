@@ -9,39 +9,39 @@ import HeadCard from "./components/headCard";
 import FunctionArea from "./components/functionArea";
 import ChatArea from "./components/chatArea";
 import LoginModal from "./components/loginModal";
+import { GetSession } from "./serve/getSession";
 const { Sider, Content } = Layout;
 
 export default function Page() {
     const { isLogin, setLogin, setUsername, setUuid } = useUserInfoStore();
     useEffect(() => {
-        // 获取当前localStorage中的token
-        const token = localStorage.getItem("token");
-        // 如果token存在，则调用login api获取用户信息
-        if (token) {
-            fetch("/api/userInfo/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ token }),
-            })
-                .then((response) => response.json())
-                .then((data) => {
+        const fetchUserInfo = async () => {
+            const token = localStorage.getItem("token");
+            if (token) {
+                try {
+                    const response = await fetch("/api/userInfo/login", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ token }),
+                    });
+                    const data = await response.json();
                     if (data.success) {
-                        // 如果获取用户信息成功，则更新用户信息到store
                         setLogin(true);
                         setUsername(data.user.userName);
                         setUuid(data.user.uuid);
                         console.log("用户信息已存在", data.user);
+                        GetSession(data.user.userName);
                     } else {
-                        // 如果获取用户信息失败，则清除localStorage中的token
                         localStorage.removeItem("token");
                     }
-                })
-                .catch((error) => {
+                } catch (error) {
                     console.error("Error fetching user info:", error);
-                });
-        }
+                }
+            }
+        };
+        fetchUserInfo();
     }, []);
     return (
         <Flex gap={0} wrap className={styles.flexContainer}>

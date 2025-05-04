@@ -36,13 +36,14 @@
 
 ### 数据库管理
 1. useInfo表
-   1. userName
-      1. 用户名
-   2. passWord
-      1. 用户密码
+   1. userName：用户名
+   2. passWord：用户密码
+   3. uuid：用户标识
 2. intelligentAgentInfo表
-   1. intelligentAgentName
-      1. 智能体名称
-   2. 
-3. 历史消息？
+   1. intelligentAgentName：智能体名称
+3. sessionRecords表
+   1. userName：用户名称
+   2. sessionInfo：会话信息
+   3. sessionId：会话Id
+   4. timeStamp：时间戳
 

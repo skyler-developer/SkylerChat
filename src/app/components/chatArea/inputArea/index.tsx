@@ -7,13 +7,14 @@ import { useReplyStore } from "@/store/useReplyStore";
 import styles from "./index.module.css";
 
 export default function InputArea() {
-    const { message, setMessage } = useMessageStore();
+    const { message, setMessage, setSessionId, sessionId } = useMessageStore();
     const [inputValue, setInputValue] = useState("");
 
     const handleSend = () => {
         // TODO: 处理发送消息的逻辑
         console.log("发送消息:", inputValue);
         const { setReply } = useReplyStore.getState();
+        sessionId || setSessionId(); // 设置 sessionId
         setMessage([...message, { type: "question", content: inputValue }]);
         getResponse(inputValue, setReply, setMessage);
         setInputValue("");
