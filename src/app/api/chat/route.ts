@@ -1,6 +1,7 @@
 import { NextRequest } from "next/server";
 import ollama from "ollama";
 import { db } from "../userInfo/router";
+import { generateTitle } from "./getTitle";
 
 export async function POST(request: NextRequest) {
     try {
@@ -13,7 +14,7 @@ export async function POST(request: NextRequest) {
             [rows] = await db.query("SELECT * FROM sessionrecords WHERE sessionId = ?", [
                 sessionId,
             ]);
-            console.log("Session Records:", rows);
+            // console.log("Session Records:", rows);
             historySession = (rows as any[])?.[0]?.sessionInfo || [];
         } catch (dbError) {
             console.error("Database query error:", dbError);
@@ -48,7 +49,6 @@ export async function POST(request: NextRequest) {
                     fullContent += text;
                     controller.enqueue(encoder.encode(text));
                 }
-                controller.close();
 
                 // 数据库存储逻辑
                 try {
@@ -64,6 +64,7 @@ export async function POST(request: NextRequest) {
                             content: fullContent,
                         },
                     ]);
+
                     if ((rows as any[]).length > 0) {
                         // 已存在，更新
                         await db.query(
@@ -71,15 +72,18 @@ export async function POST(request: NextRequest) {
                             [timeStamp, sessionInfo, sessionId],
                         );
                     } else {
+                        const title = await generateTitle(sessionInfo);
+
                         // 不存在，插入
                         await db.query(
-                            "INSERT INTO sessionrecords (username, sessionId, timeStamp, sessionInfo) VALUES (?, ?, ?, ?)",
-                            [username, sessionId, timeStamp, sessionInfo],
+                            "INSERT INTO sessionrecords (username, sessionId, timeStamp, sessionInfo, title) VALUES (?, ?, ?, ?, ?)",
+                            [username, sessionId, timeStamp, sessionInfo, title],
                         );
                     }
                 } catch (dbInsertError) {
                     console.error("Database insert error:", dbInsertError);
                 }
+                controller.close();
             },
         });
 

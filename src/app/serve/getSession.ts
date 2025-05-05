@@ -1,10 +1,9 @@
 "use client";
 
-import { useSessionInfoStore } from "@/store/useSessionInfoStore";
 import { useUserInfoStore } from "@/store/useUserInfoStore";
 
-export function GetSession(userNameParam: string) {
-    const { setSessionId, setSessionInfo } = useSessionInfoStore.getState();
+export function GetSession(userNameParam: string, setSessionInfo: (sessionInfo: any) => void) {
+    // const { setSessionId, setSessionInfo } = useSessionInfoStore.getState();
 
     const fetchSessionId = async () => {
         const userName = useUserInfoStore.getState().username;

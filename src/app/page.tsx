@@ -2,6 +2,7 @@
 
 import React, { useEffect } from "react";
 import { useUserInfoStore } from "@/store/useUserInfoStore";
+import { useSessionInfoStore } from "@/store/useSessionInfoStore";
 import { Flex, Layout } from "antd";
 import "antd/dist/reset.css";
 import styles from "./page.module.css";
@@ -14,6 +15,7 @@ const { Sider, Content } = Layout;
 
 export default function Page() {
     const { isLogin, setLogin, setUsername, setUuid } = useUserInfoStore();
+    const { setSessionInfo } = useSessionInfoStore();
     useEffect(() => {
         const fetchUserInfo = async () => {
             const token = localStorage.getItem("token");
@@ -32,7 +34,7 @@ export default function Page() {
                         setUsername(data.user.userName);
                         setUuid(data.user.uuid);
                         console.log("用户信息已存在", data.user);
-                        GetSession(data.user.userName);
+                        GetSession(data.user.userName, setSessionInfo);
                     } else {
                         localStorage.removeItem("token");
                     }

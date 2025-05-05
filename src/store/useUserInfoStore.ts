@@ -7,6 +7,8 @@ interface LoginStore {
     setUsername: (username: string) => void;
     password: string;
     setPassword: (password: string) => void;
+    newPassword: string;
+    setNewPassword: (newPassword: string) => void;
     uuid: string;
     setUuid: (uuid: string) => void;
     loginLoading: boolean;
@@ -26,6 +28,8 @@ export const useUserInfoStore = create<LoginStore>((set) => ({
     setUsername: (username) => set({ username }),
     password: "",
     setPassword: (password) => set({ password }),
+    newPassword: "",
+    setNewPassword: (newPassword) => set({ newPassword }),
     uuid: "",
     setUuid: (uuid) => set({ uuid }),
     loginError: "",

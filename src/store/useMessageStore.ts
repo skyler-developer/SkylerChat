@@ -6,7 +6,7 @@ interface MessageState {
     setMessage: (message: { type: "question" | "answer"; content: string }[]) => void;
     clearMessage: () => void;
     sessionId: string;
-    setSessionId: () => void;
+    setSessionId: (sessionId?: string) => void;
 }
 
 export const useMessageStore = create<MessageState>((set) => ({
@@ -14,5 +14,6 @@ export const useMessageStore = create<MessageState>((set) => ({
     setMessage: (message: { type: "question" | "answer"; content: string }[]) => set({ message }),
     clearMessage: () => set({ message: [] }),
     sessionId: "",
-    setSessionId: () => set({ sessionId: `${Date.now()}-${uuidv4()}` }),
+    setSessionId: (sessionId?: string) =>
+        set({ sessionId: sessionId || `${Date.now()}-${uuidv4()}` }),
 }));

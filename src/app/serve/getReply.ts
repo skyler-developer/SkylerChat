@@ -3,6 +3,10 @@
 import { useReplyStore } from "@/store/useReplyStore";
 import { useMessageStore } from "@/store/useMessageStore";
 import { useUserInfoStore } from "@/store/useUserInfoStore";
+import { useSessionInfoStore } from "@/store/useSessionInfoStore";
+import { GetSession } from "./getSession";
+import { getProbeQuestions } from "./getProbe";
+import { get } from "http";
 
 export async function getResponse(
     messageParam: string,
@@ -36,6 +40,12 @@ export async function getResponse(
                 const currentMessages = useMessageStore.getState().message;
                 setLoading(false);
                 setMessage([...currentMessages, { type: "answer", content: accumulatedResponse }]);
+                GetSession(username, useSessionInfoStore.getState().setSessionInfo); // 更新会话
+                const sessionContent = [
+                    { role: "user", content: messageParam },
+                    { role: "assistant", content: accumulatedResponse },
+                ];
+                await getProbeQuestions(JSON.stringify(sessionContent));
                 break;
             }
 

@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
             const user = users[0];
             // 用 bcrypt 验证密码
             const isMatch = await bcrypt.compare(passWord, user.passWord);
-            console.log("密码验证结果", isMatch);
+            // console.log("密码验证结果", isMatch);
             if (isMatch) {
                 // 生成 token，payload 可根据需要添加更多字段
                 const token = jwt.sign({ userName: user.userName, uuid: user.uuid }, "skyler", {

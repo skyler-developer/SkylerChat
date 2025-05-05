@@ -4,10 +4,12 @@ import { useMessageStore } from "@/store/useMessageStore";
 import { SendOutlined } from "@ant-design/icons";
 import { getResponse } from "@/app/serve/getReply";
 import { useReplyStore } from "@/store/useReplyStore";
+import { useProbeInfoStore } from "@/store/useProbeInfoStore";
 import styles from "./index.module.css";
 
 export default function InputArea() {
     const { message, setMessage, setSessionId, sessionId } = useMessageStore();
+    const { clearProbeInfo } = useProbeInfoStore();
     const [inputValue, setInputValue] = useState("");
 
     const handleSend = () => {
@@ -18,6 +20,7 @@ export default function InputArea() {
         setMessage([...message, { type: "question", content: inputValue }]);
         getResponse(inputValue, setReply, setMessage);
         setInputValue("");
+        clearProbeInfo(); // 清空追问问题
     };
 
     return (

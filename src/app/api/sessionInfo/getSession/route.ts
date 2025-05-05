@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
             "SELECT * FROM sessionrecords WHERE userName = ? ORDER BY timeStamp DESC",
             [userName],
         );
-        console.log("Session Records:", rows);
+        // console.log("Session Records:", rows);
     } catch (dbError) {
         console.error("Database query error:", dbError);
         return new Response(JSON.stringify({ error: "数据库查询出错" }), {

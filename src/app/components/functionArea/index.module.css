@@ -32,8 +32,9 @@
     justify-content: center;
     align-items: center;
     border-radius: 20px;
-    overflow: hidden;
+    /* overflow: hidden; */
     cursor: pointer;
+    position: relative;
 }
 
 .userName {
@@ -49,6 +50,23 @@
 
 .userImg:active {
     background-color: #fff !important;
+}
+
+.userInfoSetting {
+    position: absolute;
+    left: 250px;
+    bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #fff;
+    color: #131924;
+    width: 100px;
+    height: 200px;
+    border-radius: 10px;
+    box-shadow: #eff0f0 0px 0px 10px;
+    padding: 10px 10px 0 10px;
+    transition: all 0.2s ease-in-out;
 }
 
 .sessionContainer {
@@ -71,6 +89,7 @@
     background: #fff;
     cursor: pointer;
     transition: background 0.2s;
+    color: #111925;
 }
 .sessionItem:hover {
     background: #f5f5f5;
