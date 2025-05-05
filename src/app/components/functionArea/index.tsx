@@ -1,18 +1,30 @@
 import React, { useState } from "react";
 import { Button, Image } from "antd";
+import { DeleteOutlined } from "@ant-design/icons";
 import { useUserInfoStore } from "@/store/useUserInfoStore";
 import { useSessionInfoStore } from "@/store/useSessionInfoStore";
 import { useMessageStore } from "@/store/useMessageStore";
 import { useProbeInfoStore } from "@/store/useProbeInfoStore";
+import { deleteSession } from "@/app/serve/deleteSession";
 import styles from "./index.module.css";
 
 export default function FunctionArea() {
     const { username, isLogin, setLoginOption, setLoginModalVisible } = useUserInfoStore();
-    const { setMessage, setSessionId } = useMessageStore();
+    const { setMessage, setSessionId, sessionId } = useMessageStore();
     const { sessionInfo } = useSessionInfoStore();
     const { clearProbeInfo } = useProbeInfoStore();
     const [showSessionList, setShowSessionList] = useState(true);
     const [showUserSetting, setShowUserSetting] = useState(false);
+
+    const handleDeleteSession = (sessionIdParam: string) => {
+        deleteSession(sessionIdParam).then((res) => {
+            if (res && sessionId === sessionIdParam) {
+                setSessionId("");
+                setMessage([]);
+                clearProbeInfo(); // 清空追问问题
+            }
+        });
+    };
 
     console.log("FunctionArea", username);
     return (
@@ -43,24 +55,42 @@ export default function FunctionArea() {
                         {Array.isArray(sessionInfo) &&
                             sessionInfo?.map((item, index) => (
                                 <div
-                                    key={index}
                                     className={styles.sessionItem}
-                                    onClick={() => {
-                                        clearProbeInfo(); // 清空追问问题
-                                        setSessionId(item.sessionId);
-                                        setMessage(
-                                            item.sessionInfo.map((item: any) => {
-                                                return {
-                                                    type:
-                                                        item.role === "user"
-                                                            ? "question"
-                                                            : "answer",
-                                                    content: item.content,
-                                                };
-                                            }),
-                                        );
-                                    }}>
-                                    {item.title}
+                                    style={{
+                                        display: "flex",
+                                        justifyContent: "space-between",
+                                        alignItems: "center",
+                                        width: "100%",
+                                        backgroundColor:
+                                            sessionId === item.sessionId ? "#fff" : "transparent",
+                                    }}
+                                    key={index}>
+                                    <div
+                                        key={index}
+                                        style={{ width: "80%" }}
+                                        onClick={() => {
+                                            clearProbeInfo(); // 清空追问问题
+                                            setSessionId(item.sessionId);
+                                            setMessage(
+                                                item.sessionInfo.map((item: any) => {
+                                                    return {
+                                                        type:
+                                                            item.role === "user"
+                                                                ? "question"
+                                                                : "answer",
+                                                        content: item.content,
+                                                    };
+                                                }),
+                                            );
+                                        }}>
+                                        {item.title}
+                                    </div>
+                                    <DeleteOutlined
+                                        onClick={() => {
+                                            handleDeleteSession(item.sessionId);
+                                        }}
+                                        style={{ width: 30, height: 30, fontSize: 20 }}
+                                    />
                                 </div>
                             ))}
                     </div>

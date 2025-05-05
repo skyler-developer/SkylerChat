@@ -9,6 +9,11 @@ body {
     flex-direction: column;
 }
 
+/* 隐藏滚动条 */
+*::-webkit-scrollbar {
+    display: none;
+}
+
 /* 隐藏 Next.js 左下角调试图标 */
 nextjs-portal {
     display: none;

@@ -7,21 +7,30 @@ import { ArrowRightOutlined } from "@ant-design/icons";
 import { useMessageStore } from "@/store/useMessageStore";
 import { useReplyStore } from "@/store/useReplyStore";
 import { useProbeInfoStore } from "@/store/useProbeInfoStore";
+import { getResponse } from "@/app/serve/getReply";
 import styles from "./index.module.css";
 
 export default function QaArea() {
-    const { message } = useMessageStore();
-    const { reply, loading } = useReplyStore();
-    const { probeInfo } = useProbeInfoStore();
+    const { message, setMessage, sessionId, setSessionId } = useMessageStore();
+    const { reply, loading, setReply } = useReplyStore();
+    const { probeInfo, clearProbeInfo } = useProbeInfoStore();
     const containerRef = useRef<HTMLDivElement>(null);
     useEffect(() => {
         const container = containerRef.current;
         if (container) {
             container.scrollTop = container.scrollHeight;
         }
-    }, [message, loading, reply]);
+    }, [message, loading, reply, probeInfo]);
     console.log(message);
     console.log(loading);
+
+    const handleClickProbe = (item: { index: number; content: string }) => {
+        sessionId || setSessionId();
+        setMessage([...message, { type: "question", content: item.content }]);
+        getResponse(item.content, setReply, setMessage);
+        clearProbeInfo(); // 清空追问问题
+    };
+
     return (
         <div className={styles.qaArea} ref={containerRef}>
             {message.map((item, index) => {
@@ -52,7 +61,10 @@ export default function QaArea() {
             )}
             {probeInfo.map((item, index) => {
                 return (
-                    <div style={{ width: "80%", display: "flex", cursor: "pointer" }} key={index}>
+                    <div
+                        style={{ width: "80%", display: "flex", cursor: "pointer" }}
+                        key={index}
+                        onClick={() => handleClickProbe(item)}>
                         <div className={styles.qaAreaContent} style={{ opacity: 0 }}>
                             <Image src="/DeepSeekImg.webp" width={32} height={32} />
                         </div>

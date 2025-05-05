@@ -42,12 +42,7 @@ export default function InputArea() {
                     />
                 </div>
                 <div style={{ alignSelf: "end" }}>
-                    <Button
-                        type="primary"
-                        icon={<SendOutlined />}
-                        // className={styles.sendButton}
-                        onClick={handleSend}
-                    />
+                    <Button type="primary" icon={<SendOutlined />} onClick={handleSend} />
                 </div>
             </div>
         </div>

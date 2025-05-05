@@ -70,10 +70,11 @@
 }
 
 .sessionContainer {
-    overflow: hidden;
+    /* overflow: hidden; */
     transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s;
     max-height: 0;
     opacity: 0;
+    overflow-y: scroll;
 }
 .sessionContainerOpen {
     max-height: 500px; /* 根据实际内容高度调整 */
@@ -84,13 +85,15 @@
     opacity: 0;
 }
 .sessionItem {
+    background-color: transparent;
+    margin: 10px 0;
     padding: 10px 16px;
     border-bottom: 1px solid #f0f0f0;
-    background: #fff;
+    border-radius: 10px;
     cursor: pointer;
     transition: background 0.2s;
     color: #111925;
 }
 .sessionItem:hover {
-    background: #f5f5f5;
+    background-color: #eceded !important;
 }
