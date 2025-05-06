@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Input, Button } from "antd";
 import { useMessageStore } from "@/store/useMessageStore";
-import { SendOutlined } from "@ant-design/icons";
+import { SendOutlined, ArrowUpOutlined } from "@ant-design/icons";
 import { getResponse } from "@/app/serve/getReply";
 import { useReplyStore } from "@/store/useReplyStore";
 import { useProbeInfoStore } from "@/store/useProbeInfoStore";
@@ -42,7 +42,7 @@ export default function InputArea() {
                     />
                 </div>
                 <div style={{ alignSelf: "end" }}>
-                    <Button type="primary" icon={<SendOutlined />} onClick={handleSend} />
+                    <Button type="primary" icon={<ArrowUpOutlined />} onClick={handleSend} />
                 </div>
             </div>
         </div>
