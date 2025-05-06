@@ -71,7 +71,7 @@ export async function POST(request: NextRequest) {
                             "UPDATE sessionrecords SET timeStamp = ?, sessionInfo = ? WHERE sessionId = ?",
                             [timeStamp, sessionInfo, sessionId],
                         );
-                    } else {
+                    } else if (username !== "") {
                         const title = await generateTitle(sessionInfo);
 
                         // 不存在，插入

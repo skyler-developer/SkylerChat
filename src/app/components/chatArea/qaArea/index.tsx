@@ -33,6 +33,14 @@ export default function QaArea() {
 
     return (
         <div className={styles.qaArea} ref={containerRef}>
+            <div className={styles.qaAreaAnswer}>
+                <div className={styles.qaAreaContent}>
+                    <Image src="/DeepSeekImg.webp" width={32} height={32} preview={false} />
+                </div>
+                <div className={styles.qaAreaContentItemText}>
+                    <ReactMarkdown>请问有什么可以帮助您？</ReactMarkdown>
+                </div>
+            </div>
             {message.map((item, index) => {
                 return (
                     <div
@@ -52,7 +60,7 @@ export default function QaArea() {
             {loading && (
                 <div className={styles.qaAreaAnswer}>
                     <div className={styles.qaAreaContent}>
-                        <Image src="/DeepSeekImg.webp" width={50} height={50} />
+                        <Image src="/DeepSeekImg.webp" width={32} height={32} preview={false} />
                     </div>
                     <div className={styles.qaAreaContentItemText}>
                         <ReactMarkdown>{reply}</ReactMarkdown>

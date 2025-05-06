@@ -5,14 +5,17 @@ import { useUserInfoStore } from "@/store/useUserInfoStore";
 import { useSessionInfoStore } from "@/store/useSessionInfoStore";
 import { useMessageStore } from "@/store/useMessageStore";
 import { useProbeInfoStore } from "@/store/useProbeInfoStore";
+import { useModeStore } from "@/store/useModeStore";
 import { deleteSession } from "@/app/serve/deleteSession";
 import styles from "./index.module.css";
 
 export default function FunctionArea() {
     const { username, isLogin, setLoginOption, setLoginModalVisible } = useUserInfoStore();
-    const { setMessage, setSessionId, sessionId } = useMessageStore();
+    const { setMessage, setSessionId, sessionId, clearMessage } = useMessageStore();
     const { sessionInfo } = useSessionInfoStore();
     const { clearProbeInfo } = useProbeInfoStore();
+    const { setMode, mode } = useModeStore();
+
     const [showSessionList, setShowSessionList] = useState(true);
     const [showUserSetting, setShowUserSetting] = useState(false);
 
@@ -20,10 +23,19 @@ export default function FunctionArea() {
         deleteSession(sessionIdParam).then((res) => {
             if (res && sessionId === sessionIdParam) {
                 setSessionId("");
-                setMessage([]);
+                clearMessage(); // 清空消息
                 clearProbeInfo(); // 清空追问问题
             }
         });
+    };
+
+    const handleNewSession = () => {
+        if (mode !== "newSession") {
+            setSessionId("");
+            clearMessage();
+            clearProbeInfo();
+            setMode("newSession"); // 切换到新对话模式
+        }
     };
 
     console.log("FunctionArea", username);
@@ -31,14 +43,25 @@ export default function FunctionArea() {
         <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>
             <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>
                 <div className={styles.buttonContainer}>
-                    <Button className={styles.button}>新对话</Button>
+                    <Button
+                        className={styles.button}
+                        onClick={handleNewSession}
+                        style={{ backgroundColor: mode === "newSession" ? "#fff" : "" }}>
+                        新对话
+                    </Button>
                 </div>
                 <div className={styles.buttonContainer}>
                     <Button className={styles.button}>智能体</Button>
                 </div>
                 <div className={styles.horizontalLine} />
                 <div className={styles.buttonContainer}>
-                    <Button className={styles.button} onClick={() => setShowSessionList((v) => !v)}>
+                    <Button
+                        className={styles.button}
+                        style={{
+                            marginTop: 20,
+                            backgroundColor: mode === "historySession" ? "#fff" : "",
+                        }}
+                        onClick={() => setShowSessionList((v) => !v)}>
                         最近对话
                     </Button>
                 </div>
@@ -82,6 +105,7 @@ export default function FunctionArea() {
                                                     };
                                                 }),
                                             );
+                                            setMode("historySession"); // 切换到历史对话模式
                                         }}>
                                         {item.title}
                                     </div>
