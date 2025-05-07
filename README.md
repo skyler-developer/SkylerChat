@@ -43,6 +43,10 @@
    3. uuid：用户标识
 2. intelligentAgentInfo表
    1. intelligentAgentName：智能体名称
+   2. agentData：智能体提示词
+   3. userName：智能体归属用户
+   4. isPublic：是否公开
+   5. headPicture：智能体头像URL
 3. sessionRecords表
    1. userName：用户名称
    2. sessionInfo：会话信息

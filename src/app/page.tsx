@@ -11,10 +11,14 @@ import FunctionArea from "./components/functionArea";
 import ChatArea from "./components/chatArea";
 import LoginModal from "./components/loginModal";
 import { GetSession } from "./serve/getSession";
+import AgentCreate from "./components/agentArea/agentCreate";
+import AgentShow from "./components/agentArea/agentShow";
+import { useModeStore } from "@/store/useModeStore";
 const { Sider, Content } = Layout;
 
 export default function Page() {
     const { isLogin, setLogin, setUsername, setUuid } = useUserInfoStore();
+    const { mode } = useModeStore();
     const { setSessionInfo } = useSessionInfoStore();
     useEffect(() => {
         const fetchUserInfo = async () => {
@@ -55,7 +59,9 @@ export default function Page() {
                 <Layout>
                     <Content className={styles.content}>
                         <LoginModal />
-                        <ChatArea />
+                        {(mode === "newSession" || mode === "historySession") && <ChatArea />}
+                        {mode === "agentCreate" && <AgentCreate />}
+                        {mode === "agentShow" && <AgentShow />}
                     </Content>
                 </Layout>
             </Layout>

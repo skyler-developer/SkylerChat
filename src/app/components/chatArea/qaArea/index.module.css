@@ -24,6 +24,10 @@
     margin-right: 20px;
 }
 
+.image {
+    border-radius: 50%;
+}
+
 .qaAreaContentItemText {
     display: flex;
     flex-direction: column;

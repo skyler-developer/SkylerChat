@@ -7,6 +7,7 @@ import { ArrowRightOutlined } from "@ant-design/icons";
 import { useMessageStore } from "@/store/useMessageStore";
 import { useReplyStore } from "@/store/useReplyStore";
 import { useProbeInfoStore } from "@/store/useProbeInfoStore";
+import { useAgentStore } from "@/store/useAgentStore";
 import { getResponse } from "@/app/serve/getReply";
 import styles from "./index.module.css";
 
@@ -15,6 +16,7 @@ export default function QaArea() {
     const { reply, loading, setReply } = useReplyStore();
     const { probeInfo, clearProbeInfo } = useProbeInfoStore();
     const containerRef = useRef<HTMLDivElement>(null);
+    const { currentAgent } = useAgentStore();
     useEffect(() => {
         const container = containerRef.current;
         if (container) {

@@ -1,8 +1,8 @@
 import { create } from "zustand";
 
 interface ModeStore {
-    mode: "newSession" | "agent" | "historySession";
-    setMode: (mode: "newSession" | "agent" | "historySession") => void;
+    mode: "newSession" | "agentCreate" | "historySession" | "agentShow";
+    setMode: (mode: "newSession" | "agentCreate" | "historySession" | "agentShow") => void;
 }
 
 export const useModeStore = create<ModeStore>((set) => ({

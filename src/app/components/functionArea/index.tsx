@@ -51,7 +51,9 @@ export default function FunctionArea() {
                     </Button>
                 </div>
                 <div className={styles.buttonContainer}>
-                    <Button className={styles.button}>智能体</Button>
+                    <Button className={styles.button} onClick={() => setMode("agentShow")}>
+                        智能体
+                    </Button>
                 </div>
                 <div className={styles.horizontalLine} />
                 <div className={styles.buttonContainer}>
@@ -94,17 +96,17 @@ export default function FunctionArea() {
                                         onClick={() => {
                                             clearProbeInfo(); // 清空追问问题
                                             setSessionId(item.sessionId);
-                                            setMessage(
-                                                item.sessionInfo.map((item: any) => {
-                                                    return {
-                                                        type:
-                                                            item.role === "user"
-                                                                ? "question"
-                                                                : "answer",
-                                                        content: item.content,
-                                                    };
-                                                }),
-                                            );
+                                            const message = item.sessionInfo.map((item: any) => {
+                                                return {
+                                                    type:
+                                                        item.role === "user"
+                                                            ? "question"
+                                                            : "answer",
+                                                    content: item.content,
+                                                };
+                                            });
+                                            console.log("message", message);
+                                            setMessage(message);
                                             setMode("historySession"); // 切换到历史对话模式
                                         }}>
                                         {item.title}
