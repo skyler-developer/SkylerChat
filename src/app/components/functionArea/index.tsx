@@ -50,7 +50,12 @@ export default function FunctionArea() {
                         新对话
                     </Button>
                 </div>
-                <div className={styles.buttonContainer}>
+                <div
+                    className={styles.buttonContainer}
+                    style={{
+                        backgroundColor:
+                            mode === "agentShow" || mode === "agentCreate" ? "#fff" : "",
+                    }}>
                     <Button className={styles.button} onClick={() => setMode("agentShow")}>
                         智能体
                     </Button>

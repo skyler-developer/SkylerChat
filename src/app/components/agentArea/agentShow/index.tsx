@@ -39,7 +39,11 @@ const AgentShow: React.FC = () => {
     return (
         <div className={styles.agentShow}>
             <div className={styles.header}>
-                <Button type="primary" className={styles.createButton} icon={<PlusOutlined />}>
+                <Button
+                    type="primary"
+                    className={styles.createButton}
+                    icon={<PlusOutlined />}
+                    onClick={() => setMode("agentCreate")}>
                     创建智能体
                 </Button>
             </div>
