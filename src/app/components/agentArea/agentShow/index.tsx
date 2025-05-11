@@ -3,6 +3,9 @@
 import React, { useEffect } from "react";
 import { useAgentStore } from "@/store/useAgentStore";
 import { useModeStore } from "@/store/useModeStore";
+import { useMessageStore } from "@/store/useMessageStore";
+import { useProbeInfoStore } from "@/store/useProbeInfoStore";
+import { useUserInfoStore } from "@/store/useUserInfoStore";
 import styles from "./index.module.css";
 import { PlusOutlined } from "@ant-design/icons";
 import { Button } from "antd";
@@ -18,14 +21,20 @@ interface Agent {
 const AgentShow: React.FC = () => {
     const { agentList, loading, error, fetchAgentList, setCurrentAgent } = useAgentStore();
     const { setMode } = useModeStore();
+    const { clearMessage, setSessionId } = useMessageStore();
+    const { clearProbeInfo } = useProbeInfoStore();
+    const { username } = useUserInfoStore();
 
     useEffect(() => {
-        fetchAgentList();
+        fetchAgentList(username);
     }, []);
 
     const handleCardClick = (agent: Agent) => {
         setCurrentAgent(agent);
         setMode("newSession");
+        clearMessage();
+        clearProbeInfo();
+        setSessionId();
     };
 
     if (loading) {

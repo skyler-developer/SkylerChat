@@ -4,6 +4,7 @@ import { useReplyStore } from "@/store/useReplyStore";
 import { useMessageStore } from "@/store/useMessageStore";
 import { useUserInfoStore } from "@/store/useUserInfoStore";
 import { useSessionInfoStore } from "@/store/useSessionInfoStore";
+import { useAgentStore } from "@/store/useAgentStore";
 import { GetSession } from "./getSession";
 import { getProbeQuestions } from "./getProbe";
 import { get } from "http";
@@ -15,6 +16,7 @@ export async function getResponse(
 ) {
     const { username, uuid, isLogin } = useUserInfoStore.getState();
     const { sessionId } = useMessageStore.getState();
+    const { currentAgent } = useAgentStore.getState();
 
     try {
         const res = await fetch("/api/chat", {
@@ -22,7 +24,14 @@ export async function getResponse(
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ message: messageParam, isLogin, username, uuid, sessionId }),
+            body: JSON.stringify({
+                message: messageParam,
+                isLogin,
+                username,
+                uuid,
+                sessionId,
+                agentData: currentAgent?.agentData,
+            }),
         });
 
         if (!res.body) {

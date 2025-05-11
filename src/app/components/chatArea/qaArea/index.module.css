@@ -29,9 +29,6 @@
 }
 
 .qaAreaContentItemText {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
     font-size: 16px;
     background-color: #f4f5fa;
     padding: 20px 20px 20px 20px;
@@ -111,4 +108,24 @@
 
 .qaAreaContentItemText a:hover {
     text-decoration: underline;
+}
+
+.thinkProcess {
+    margin: 10px 0;
+    padding: 15px;
+    background-color: #f5f5f5;
+    border-left: 4px solid #1890ff;
+    border-radius: 4px;
+}
+
+.thinkHeader {
+    font-weight: 600;
+    color: #1890ff;
+    margin-bottom: 8px;
+}
+
+.thinkContent {
+    color: #666;
+    font-style: italic;
+    line-height: 1.6;
 }

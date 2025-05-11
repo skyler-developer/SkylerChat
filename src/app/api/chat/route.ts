@@ -5,7 +5,9 @@ import { generateTitle } from "./getTitle";
 
 export async function POST(request: NextRequest) {
     try {
-        const { message, username, sessionId } = await request.json();
+        const { message, username, sessionId, agentData } = await request.json();
+
+        console.log("agentData", agentData);
 
         let rows;
         let historySession = null;
@@ -36,6 +38,7 @@ export async function POST(request: NextRequest) {
                         {
                             role: "user",
                             content:
+                                agentData ||
                                 "请所有的回答都采用markdown格式输出，为了良好的阅读体验，回答内容尽量采用结构化的方式输出，使用标题、列表等格式化内容。",
                         },
                         ...historySession,

@@ -3,40 +3,45 @@
 ## 本项目旨在为用户提供智能问答服务。
 
 ## 技术栈
+
 1. 框架：Next.js
-2. 包管理：npm
+2. 包管理：pnpm
 3. 状态管理：zustand
-4. 接口：Next.js API能力
+4. 接口创建：Next.js API能力
+5. 接口请求：fetch API
+6. 数据库存储：MySQL
+7. 数据库连接：mysql2
 
 ## 开发
-1. 初始化：npm i
-2. 启动：npm run dev
+
+1. 初始化：pnpm i
+2. 启动：pnpm run dev
 
 ### 功能点
+
 1. 用户登陆注册
-   - 采用...加密算法
+
+   - 采用bcrypt加密算法存储及验证密码（引入bcrypt库）
+   - 采用uuid为用户唯一标识（引入uuid库）
+   - 使用jwt生成及验证token，保持用户登陆状态（引入jsonwebtoken库）
 2. 智能体创建
-3. 聊天
-   - 错误重试机制
-   - 存储统一使用sessionId,有userName存userName
-   - 时间戳每次请求响应进行更新
-   - 采用小模型进行上下文总结，生成标题
-   - 采用小模型生成追问问题，使用JSON格式
-4. 翻译
-5. 导出md
-6. 使用mysql2，无需手动释放连接池
-7. uuid的创建，保证无重复
-8. 富文本解析（md格式）
-9. 使用pnpm进行包管理
-10. token存储登录状态
-11. 用户不登陆的状态下能否存储会话信息？
-    1.  考虑使用浏览器指纹
-12. 使用fetch API进行接口请求
 
+   - 使用Prompt作为智能体信息
+3. 聊天会话
 
+   - 使用uuid创建sessionId，作为唯一会话Id
+   - 时间戳每次请求响应进行更新，保证会话展示的正序性
+   - 使用富文本解析回答内容（md格式，引入react-markdown库）
+   - 使用SSE解析回答内容，进行流式渲染（参考链接：https://www.ruanyifeng.com/blog/2017/05/server-sent_events.html）
+4. 会话标题
 
+   - 根据上下文信息，使用小模型（Qwen3:0.6b），生成标题，保证较快生成速度
+5. 会话追问
 
-### 数据库管理
+   - 根据上下文信息，使用小模型（Qwen3:0.6b），生成追问问题，保证较快生成速度
+
+### 数据库信息
+
 1. useInfo表
    1. userName：用户名
    2. passWord：用户密码
@@ -52,9 +57,3 @@
    2. sessionInfo：会话信息
    3. sessionId：会话Id
    4. timeStamp：时间戳
-
-
-### TODO
-- 修改密码
-- 智能体创建
-- 新建对话

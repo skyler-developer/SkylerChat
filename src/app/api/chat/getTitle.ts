@@ -11,7 +11,7 @@ export async function generateTitle(sessionInfo: string): Promise<string> {
         "请根据以下JSON格式的对话内容，生成一个简洁、准确、能概括本次对话主题的标题，尽量使用陈述句，10字以内，直接输出标题，不要加引号：";
     const messages = [
         { role: "user", content: prompt },
-        { role: "user", content: `${sessionInfo} /no_think` },
+        { role: "user", content: `${sessionInfo}` },
     ];
     console.log("生成标题的消息", messages);
     try {
