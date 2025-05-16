@@ -4,7 +4,7 @@ import { db } from "../../userInfo/router";
 export async function POST(request: NextRequest) {
     try {
         const { userName, intelligentAgentName, sessionId, interactionType } = await request.json();
-        if (!userName || !intelligentAgentName || !sessionId || !interactionType) {
+        if (!userName || !intelligentAgentName || !interactionType) {
             return NextResponse.json({ success: false, message: "参数不完整" }, { status: 400 });
         }
         await db.query(

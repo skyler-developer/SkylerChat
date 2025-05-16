@@ -14,12 +14,14 @@ import { GetSession } from "./serve/getSession";
 import AgentCreate from "./components/agentArea/agentCreate";
 import AgentShow from "./components/agentArea/agentShow";
 import { useModeStore } from "@/store/useModeStore";
+import { useRecommendationStore } from "@/store/recommendationStore";
 const { Sider, Content } = Layout;
 
 export default function Page() {
     const { isLogin, setLogin, setUsername, setUuid } = useUserInfoStore();
     const { mode } = useModeStore();
     const { setSessionInfo } = useSessionInfoStore();
+    const { fetchRecommendations } = useRecommendationStore();
     useEffect(() => {
         const fetchUserInfo = async () => {
             const token = localStorage.getItem("token");
@@ -39,6 +41,7 @@ export default function Page() {
                         setUuid(data.user.uuid);
                         console.log("用户信息已存在", data.user);
                         GetSession(data.user.userName, setSessionInfo);
+                        fetchRecommendations(data.user.userName);
                     } else {
                         localStorage.removeItem("token");
                     }

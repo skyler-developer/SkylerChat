@@ -2,7 +2,7 @@ import { create } from "zustand";
 import { RecommendationState } from "@/types/recommendation";
 
 interface RecommendationStore extends RecommendationState {
-    fetchRecommendations: (userName: string, currentAgentName?: string) => Promise<void>;
+    fetchRecommendations: (userName: string) => Promise<void>;
     clearRecommendations: () => void;
 }
 
@@ -12,13 +12,13 @@ export const useRecommendationStore = create<RecommendationStore>((set) => ({
     isLoading: false,
     error: null,
 
-    fetchRecommendations: async (userName: string, currentAgentName?: string) => {
+    fetchRecommendations: async (userName: string) => {
         try {
             set({ isLoading: true, error: null });
             const response = await fetch("/api/intelligentAgent/recommend", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ userName, currentAgentName }),
+                body: JSON.stringify({ userName }),
             });
             const result = await response.json();
             if (result.success) {

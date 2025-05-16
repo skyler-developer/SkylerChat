@@ -3,13 +3,9 @@ import { Card, CardContent, Typography, CircularProgress, Box } from "@mui/mater
 
 interface AgentRecommendationsProps {
     userName: string;
-    currentAgentName?: string;
 }
 
-export const AgentRecommendations: React.FC<AgentRecommendationsProps> = ({
-    userName,
-    currentAgentName,
-}) => {
+export const AgentRecommendations: React.FC<AgentRecommendationsProps> = ({ userName }) => {
     const [recommendations, setRecommendations] = useState<any[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
@@ -24,7 +20,7 @@ export const AgentRecommendations: React.FC<AgentRecommendationsProps> = ({
                     headers: {
                         "Content-Type": "application/json",
                     },
-                    body: JSON.stringify({ userName, currentAgentName }),
+                    body: JSON.stringify({ userName }),
                 });
                 const result = await response.json();
                 if (result.success) {
@@ -39,7 +35,7 @@ export const AgentRecommendations: React.FC<AgentRecommendationsProps> = ({
             }
         };
         fetchRecommendations();
-    }, [userName, currentAgentName]);
+    }, [userName]);
 
     if (isLoading) {
         return (
