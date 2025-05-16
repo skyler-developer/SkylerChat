@@ -9,6 +9,7 @@ import { useUserInfoStore } from "@/store/useUserInfoStore";
 import styles from "./index.module.css";
 import { PlusOutlined } from "@ant-design/icons";
 import { Button } from "antd";
+import { AgentRecommendations } from "@/components/AgentRecommendations";
 
 interface Agent {
     intelligentAgentName: string;
@@ -82,6 +83,7 @@ const AgentShow: React.FC = () => {
                     </div>
                 ))}
             </div>
+            <AgentRecommendations userName={username} />
         </div>
     );
 };

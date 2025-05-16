@@ -49,6 +49,18 @@ export async function POST(request: NextRequest) {
             });
         }
 
+        // 记录用户行为
+        await fetch("http://localhost:3000/api/intelligentAgent/recordBehavior", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                userName: username,
+                intelligentAgentName,
+                sessionId,
+                interactionType: "use",
+            }),
+        });
+
         const encoder = new TextEncoder();
         const stream = new ReadableStream({
             async start(controller) {
