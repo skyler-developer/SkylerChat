@@ -30,7 +30,7 @@ export async function getResponse(
                 username,
                 uuid,
                 sessionId,
-                agentData: currentAgent?.agentData,
+                intelligentAgentName: currentAgent?.intelligentAgentName,
             }),
         });
 

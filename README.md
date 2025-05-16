@@ -57,3 +57,4 @@
    2. sessionInfo：会话信息
    3. sessionId：会话Id
    4. timeStamp：时间戳
+   5. intelligentAgentName：智能体名称

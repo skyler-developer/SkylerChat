@@ -5,9 +5,30 @@ import { generateTitle } from "./getTitle";
 
 export async function POST(request: NextRequest) {
     try {
-        const { message, username, sessionId, agentData } = await request.json();
+        const { message, username, sessionId, intelligentAgentName } = await request.json();
 
-        console.log("agentData", agentData);
+        // 查询智能体数据
+        let agentData = null;
+        if (intelligentAgentName) {
+            try {
+                const [agentRows]: any = await db.query(
+                    "SELECT agentData FROM intelligentAgentInfo WHERE intelligentAgentName = ?",
+                    [intelligentAgentName],
+                );
+                if (agentRows.length > 0) {
+                    agentData = agentRows[0].agentData;
+                    console.log("agentData", agentData);
+                }
+            } catch (dbError) {
+                console.error("查询智能体数据出错:", dbError);
+                return new Response(JSON.stringify({ error: "查询智能体数据出错" }), {
+                    status: 500,
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                });
+            }
+        }
 
         let rows;
         let historySession = null;
@@ -71,16 +92,23 @@ export async function POST(request: NextRequest) {
                     if ((rows as any[]).length > 0) {
                         // 已存在，更新
                         await db.query(
-                            "UPDATE sessionrecords SET timeStamp = ?, sessionInfo = ? WHERE sessionId = ?",
-                            [timeStamp, sessionInfo, sessionId],
+                            "UPDATE sessionrecords SET timeStamp = ?, sessionInfo = ?, intelligentAgentName = ? WHERE sessionId = ?",
+                            [timeStamp, sessionInfo, intelligentAgentName || "", sessionId],
                         );
                     } else if (username !== "") {
                         const title = await generateTitle(sessionInfo);
 
                         // 不存在，插入
                         await db.query(
-                            "INSERT INTO sessionrecords (username, sessionId, timeStamp, sessionInfo, title) VALUES (?, ?, ?, ?, ?)",
-                            [username, sessionId, timeStamp, sessionInfo, title],
+                            "INSERT INTO sessionrecords (username, sessionId, timeStamp, sessionInfo, title, intelligentAgentName) VALUES (?, ?, ?, ?, ?, ?)",
+                            [
+                                username,
+                                sessionId,
+                                timeStamp,
+                                sessionInfo,
+                                title,
+                                intelligentAgentName || "",
+                            ],
                         );
                     }
                 } catch (dbInsertError) {

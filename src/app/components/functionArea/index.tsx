@@ -6,8 +6,10 @@ import { useSessionInfoStore } from "@/store/useSessionInfoStore";
 import { useMessageStore } from "@/store/useMessageStore";
 import { useProbeInfoStore } from "@/store/useProbeInfoStore";
 import { useModeStore } from "@/store/useModeStore";
+import { useAgentStore } from "@/store/useAgentStore";
 import { deleteSession } from "@/app/serve/deleteSession";
 import styles from "./index.module.css";
+import { getIntelligentAgentInfo } from "@/app/serve/getIntelligentAgentInfo";
 
 export default function FunctionArea() {
     const { username, isLogin, setLoginOption, setLoginModalVisible } = useUserInfoStore();
@@ -15,7 +17,7 @@ export default function FunctionArea() {
     const { sessionInfo } = useSessionInfoStore();
     const { clearProbeInfo } = useProbeInfoStore();
     const { setMode, mode } = useModeStore();
-
+    const { setCurrentAgent } = useAgentStore();
     const [showSessionList, setShowSessionList] = useState(true);
     const [showUserSetting, setShowUserSetting] = useState(false);
 
@@ -113,6 +115,15 @@ export default function FunctionArea() {
                                             console.log("message", message);
                                             setMessage(message);
                                             setMode("historySession"); // 切换到历史对话模式
+                                            if (item.intelligentAgentName) {
+                                                getIntelligentAgentInfo(
+                                                    item.intelligentAgentName,
+                                                ).then((res) => {
+                                                    setCurrentAgent(res);
+                                                });
+                                            } else {
+                                                setCurrentAgent(null);
+                                            }
                                         }}>
                                         {item.title}
                                     </div>
