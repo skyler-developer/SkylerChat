@@ -9,11 +9,14 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@langchain/community": "^0.3.43",
+    "@langchain/core": "^0.3.56",
     "@types/jsonwebtoken": "^9.0.9",
     "antd": "^5.24.8",
     "bcrypt": "^5.1.1",
     "eventemitter3": "^5.0.1",
     "jsonwebtoken": "^9.0.2",
+    "langchain": "^0.3.26",
     "mysql2": "^3.14.1",
     "next": "15.3.1",
     "ollama": "^0.5.15",
