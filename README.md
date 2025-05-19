@@ -39,6 +39,8 @@
 5. 会话追问
 
    - 根据上下文信息，使用小模型（Qwen3:0.6b），生成追问问题，保证较快生成速度
+6. 智能体推荐
+   1. 使用协同过滤算法，根据用户行为对智能体推荐，优先展示前三个用户更感兴趣智能体
 
 ### 数据库信息
 
@@ -58,3 +60,10 @@
    3. sessionId：会话Id
    4. timeStamp：时间戳
    5. intelligentAgentName：智能体名称
+4. user_behavior表
+   1. id：自增id
+   2. user_name：用户名
+   3. intelligent_agent_name：智能体名称
+   4. session_id：会话id
+   5. interaction_type：行为类型
+   6. created_at：创建时间

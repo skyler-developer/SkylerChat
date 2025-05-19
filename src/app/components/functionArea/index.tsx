@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Image } from "antd";
+import { Button, Image, Popconfirm } from "antd";
 import { DeleteOutlined } from "@ant-design/icons";
 import { useUserInfoStore } from "@/store/useUserInfoStore";
 import { useSessionInfoStore } from "@/store/useSessionInfoStore";
@@ -37,6 +37,7 @@ export default function FunctionArea() {
             clearMessage();
             clearProbeInfo();
             setMode("newSession"); // 切换到新对话模式
+            setCurrentAgent(null);
         }
     };
 
@@ -127,12 +128,17 @@ export default function FunctionArea() {
                                         }}>
                                         {item.title}
                                     </div>
-                                    <DeleteOutlined
-                                        onClick={() => {
+                                    <Popconfirm
+                                        title="确定删除吗？"
+                                        okText="确定"
+                                        cancelText="取消"
+                                        onConfirm={() => {
                                             handleDeleteSession(item.sessionId);
-                                        }}
-                                        style={{ width: 30, height: 30, fontSize: 20 }}
-                                    />
+                                        }}>
+                                        <DeleteOutlined
+                                            style={{ width: 30, height: 30, fontSize: 20 }}
+                                        />
+                                    </Popconfirm>
                                 </div>
                             ))}
                     </div>
@@ -142,7 +148,7 @@ export default function FunctionArea() {
             <div className={styles.userInfo}>
                 <div className={styles.userImg} onClick={() => setShowUserSetting((v) => !v)}>
                     <Image
-                        src="/DeepSeekImgf8f8f8.webp"
+                        src="http://www.skyler.fun/dogStudy.png"
                         width={50}
                         height={50}
                         preview={false}
@@ -181,6 +187,14 @@ export default function FunctionArea() {
                     </div>
                 </div>
                 <div className={styles.userName}>
+                    <div
+                        style={{
+                            width: 8,
+                            height: 8,
+                            borderRadius: 50,
+                            backgroundColor: isLogin ? "#52c41a" : "#ff4d4f",
+                        }}
+                    />
                     {username} - {isLogin ? "用户已登录" : "未登录"}
                 </div>
             </div>

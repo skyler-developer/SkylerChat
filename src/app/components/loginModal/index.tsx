@@ -46,7 +46,7 @@ function LoginModal() {
                     setLogin(true);
                     GetSession(username, setSessionInfo); // 更新会话
                 } else {
-                    // 登录失败的处理
+                    console.log("登录失败", data);
                 }
             } catch (e) {
                 // 网络或其他错误处理

@@ -115,7 +115,7 @@ const QaArea: React.FC = () => {
                                 src={
                                     item.type === "answer"
                                         ? currentAgent?.headPicture || "/DeepSeekImg.webp"
-                                        : "/DeepSeekImg.webp"
+                                        : "http://www.skyler.fun/dogStudy.png"
                                 }
                                 width={50}
                                 height={50}
