@@ -2,6 +2,7 @@ import { NextRequest } from "next/server";
 import ollama from "ollama";
 import { db } from "../userInfo/router";
 import { generateTitle } from "./getTitle";
+import { answerWithRag, loadAndProcessMarkdown } from "../RAG/chain";
 
 export async function POST(request: NextRequest) {
     try {
@@ -17,7 +18,7 @@ export async function POST(request: NextRequest) {
                 );
                 if (agentRows.length > 0) {
                     agentData = agentRows[0].agentData;
-                    console.log("agentData", agentData);
+                    // console.log("agentData", agentData);
                 }
             } catch (dbError) {
                 console.error("查询智能体数据出错:", dbError);
@@ -48,6 +49,18 @@ export async function POST(request: NextRequest) {
                 },
             });
         }
+        // const answer = await answerWithRag(message, agentData);
+        // console.log("answerWithRag", answer);
+
+        // 根据智能体名称选择不同的处理方式
+        if (intelligentAgentName === "工大小灵通") {
+            const stream = await loadAndProcessMarkdown(message);
+            console.log("开始流式输出：");
+            for await (const chunk of stream) {
+                console.log("chunk:", chunk);
+            }
+            console.log("流式输出结束");
+        }
 
         // 记录用户行为
         await fetch("http://localhost:3000/api/intelligentAgent/recordBehavior", {
@@ -62,28 +75,39 @@ export async function POST(request: NextRequest) {
         });
 
         const encoder = new TextEncoder();
-        const stream = new ReadableStream({
+        const streamResponse = new ReadableStream({
             async start(controller) {
                 let fullContent = "";
-                const response = await ollama.chat({
-                    model: "deepseek-r1",
-                    messages: [
-                        {
-                            role: "user",
-                            content:
-                                agentData ||
-                                "请所有的回答都采用markdown格式输出，为了良好的阅读体验，回答内容尽量采用结构化的方式输出，使用标题、列表等格式化内容。",
-                        },
-                        ...historySession,
-                        { role: "user", content: message },
-                    ],
-                    stream: true, // 启用流式输出
-                });
 
-                for await (const chunk of response) {
-                    const text = chunk.message?.content || "";
-                    fullContent += text;
-                    controller.enqueue(encoder.encode(text));
+                if (intelligentAgentName === "工大小灵通") {
+                    // 使用 RAG 链的流式输出
+                    const stream = await loadAndProcessMarkdown(message);
+                    for await (const chunk of stream) {
+                        fullContent += chunk;
+                        controller.enqueue(encoder.encode(chunk));
+                    }
+                } else {
+                    // 使用原有的 Ollama 聊天
+                    const response = await ollama.chat({
+                        model: "deepseek-r1",
+                        messages: [
+                            {
+                                role: "user",
+                                content:
+                                    agentData ||
+                                    "请所有的回答都采用markdown格式输出，为了良好的阅读体验，回答内容尽量采用结构化的方式输出，使用标题、列表等格式化内容。",
+                            },
+                            ...historySession,
+                            { role: "user", content: message },
+                        ],
+                        stream: true,
+                    });
+
+                    for await (const chunk of response) {
+                        const text = chunk.message?.content || "";
+                        fullContent += text;
+                        controller.enqueue(encoder.encode(text));
+                    }
                 }
 
                 // 数据库存储逻辑
@@ -130,7 +154,7 @@ export async function POST(request: NextRequest) {
             },
         });
 
-        return new Response(stream, {
+        return new Response(streamResponse, {
             headers: {
                 "Content-Type": "text/event-stream",
                 "Cache-Control": "no-cache",

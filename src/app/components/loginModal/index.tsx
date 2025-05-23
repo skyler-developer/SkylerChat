@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Modal, Input, Button } from "antd";
 import { useUserInfoStore } from "@/store/useUserInfoStore";
 import { useSessionInfoStore } from "@/store/useSessionInfoStore";
 import { GetSession } from "@/app/serve/getSession";
+import { useMessageContext } from "@/store/context";
 
 function LoginModal() {
     const {
@@ -24,6 +25,7 @@ function LoginModal() {
         setNewPassword,
     } = useUserInfoStore();
     const { setSessionInfo } = useSessionInfoStore();
+    const messageApi = useMessageContext();
 
     const handleOk = async () => {
         console.log("loginOption username password");
@@ -42,11 +44,12 @@ function LoginModal() {
                     localStorage.setItem("token", data.token);
                     console.log("登录成功", data);
                     setLoginModalVisible(false);
-                    // 你可以在这里设置用户信息到store等
                     setLogin(true);
                     GetSession(username, setSessionInfo); // 更新会话
+                    messageApi.success("登录成功");
                 } else {
                     console.log("登录失败", data);
+                    messageApi.error("登录失败，请检查用户名和密码是否正确！");
                 }
             } catch (e) {
                 // 网络或其他错误处理
@@ -67,6 +70,7 @@ function LoginModal() {
                 if (res.status === 201) {
                     setLoginModalVisible(false);
                     setLoginOption(true); // 切换到登录
+                    messageApi.success("注册成功！");
                 } else {
                     // 注册失败的处理
                 }
@@ -93,6 +97,7 @@ function LoginModal() {
                     setLoginModalVisible(false);
                     setLoginOption(true); // 切换到登录
                     GetSession(username, setSessionInfo); // 更新会话
+                    messageApi.success("修改密码成功！");
                 } else {
                     // 修改密码失败的处理
                 }

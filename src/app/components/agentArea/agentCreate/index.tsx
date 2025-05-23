@@ -1,15 +1,17 @@
 // 创建智能体页面
 
-import React from "react";
+import React, { useContext } from "react";
 import { Button, Form, Input, message, Switch } from "antd";
 import { useUserInfoStore } from "@/store/useUserInfoStore";
 import { useModeStore } from "@/store/useModeStore";
 import { useRouter } from "next/navigation";
+import { useMessageContext } from "@/store/context";
 
 const AgentCreate: React.FC = () => {
     const { username } = useUserInfoStore();
     const { setMode } = useModeStore();
     const [form] = Form.useForm();
+    const messageApi = useMessageContext();
 
     const onFinish = async (values: any) => {
         try {
@@ -35,6 +37,7 @@ const AgentCreate: React.FC = () => {
                 setMode("agentShow"); // 创建成功后切换到智能体展示页面
                 // 清空表单
                 form.resetFields();
+                messageApi.success("创建成功！");
             } else {
                 // 处理重复名称的情况
                 if (data.code === "DUPLICATE_AGENT_NAME") {
@@ -46,8 +49,10 @@ const AgentCreate: React.FC = () => {
                             errors: [data.message],
                         },
                     ]);
+                    messageApi.error("名称重复！");
                 } else {
                     message.error(data.message || "创建失败");
+                    messageApi.error("创建失败！");
                 }
             }
         } catch (error) {
