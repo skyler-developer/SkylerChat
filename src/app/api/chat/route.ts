@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
             });
         }
 
-        // 记录用户行为
+        // 记录用户行为，“use”
         await fetch("http://localhost:3000/api/intelligentAgent/recordBehavior", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -138,6 +138,19 @@ export async function POST(request: NextRequest) {
                 } catch (dbInsertError) {
                     console.error("Database insert error:", dbInsertError);
                 }
+
+                // 记录用户行为，“complete”
+                await fetch("http://localhost:3000/api/intelligentAgent/recordBehavior", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        userName: username,
+                        intelligentAgentName,
+                        sessionId,
+                        interactionType: "complete",
+                    }),
+                });
+
                 controller.close();
             },
         });
