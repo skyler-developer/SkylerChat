@@ -20,8 +20,8 @@ const model = new Ollama({
 
 // 初始化文本分割器，针对 markdown 文档优化
 const textSplitter = new RecursiveCharacterTextSplitter({
-    chunkSize: 1000,
-    chunkOverlap: 200,
+    chunkSize: 400,
+    chunkOverlap: 300,
     separators: ["\n## ", "\n### ", "\n#### ", "\n", " ", ""], // 优先按 markdown 标题分割
     keepSeparator: true, // 保留分隔符，这样标题会保留在内容中
 });
@@ -36,25 +36,40 @@ const vectorStore = new MemoryVectorStore(
 
 // 创建 RAG 提示模板
 const promptTemplate = PromptTemplate.fromTemplate(`
-你是一个智能助手，请根据以下上下文信息来回答问题。如果上下文中没有相关信息，请直接说明无法回答。
-上下文信息可能包含 markdown 格式的内容，请保持其格式的完整性。
+你是一个智能助手，请根据以下上下文信息来回答问题。特别注意文档中的时间、日期等具体信息。
+如果上下文中没有相关信息，请直接说明无法回答。
 
 上下文信息：
 {context}
 
 问题：{question}
 
-请用中文回答，并采用markdown格式输出。为了良好的阅读体验，回答内容尽量采用结构化的方式输出，使用标题、列表等格式化内容。
+请特别注意：
+1. 仔细查找文档中的时间、日期信息
+2. 如果找到具体时间，请直接引用原文
+3. 如果信息不完整，请明确指出
 `);
 
 // 创建 RAG 链
 export const ragChain = RunnableSequence.from([
     {
         context: async (input: { question: string }) => {
+            // 添加时间相关的关键词
+            const timeKeywords = ["年", "月", "日", "成立", "创建", "建立"];
+
             // 根据问题检索相关文档
-            const results = await vectorStore.similaritySearch(input.question, 3);
+            const results = await vectorStore.similaritySearch(input.question, 12);
+
+            // 优先选择包含时间信息的文档块
+            const timeRelevantResults = results.filter((doc) =>
+                timeKeywords.some((keyword) => doc.pageContent.includes(keyword)),
+            );
+
+            // 如果找到包含时间信息的文档块，优先使用它们
+            const selectedResults = timeRelevantResults.length > 0 ? timeRelevantResults : results;
+
             // 将检索到的文档合并为上下文
-            return results.map((doc) => doc.pageContent).join("\n\n");
+            return selectedResults.map((doc) => doc.pageContent).join("\n\n");
         },
         question: (input: { question: string }) => input.question,
     },
@@ -136,9 +151,3 @@ export async function loadAndProcessMarkdown(question: string) {
         throw error;
     }
 }
-
-// 使用示例
-// const stream = await loadAndProcessMarkdown("河南工业大学有哪些特色学科？");
-// for await (const chunk of stream) {
-//     console.log(chunk);
-// }

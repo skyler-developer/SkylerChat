@@ -49,18 +49,6 @@ export async function POST(request: NextRequest) {
                 },
             });
         }
-        // const answer = await answerWithRag(message, agentData);
-        // console.log("answerWithRag", answer);
-
-        // 根据智能体名称选择不同的处理方式
-        if (intelligentAgentName === "工大小灵通") {
-            const stream = await loadAndProcessMarkdown(message);
-            console.log("开始流式输出：");
-            for await (const chunk of stream) {
-                console.log("chunk:", chunk);
-            }
-            console.log("流式输出结束");
-        }
 
         // 记录用户行为
         await fetch("http://localhost:3000/api/intelligentAgent/recordBehavior", {
