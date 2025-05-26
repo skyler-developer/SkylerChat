@@ -15,14 +15,14 @@ import { join } from "path";
 // 初始化 Ollama 模型
 const model = new Ollama({
     baseUrl: "http://localhost:11434",
-    model: "deepseek-r1",
+    model: "qwen3:8b",
 });
 
 // 初始化文本分割器，针对 markdown 文档优化
 const textSplitter = new RecursiveCharacterTextSplitter({
-    chunkSize: 400,
-    chunkOverlap: 300,
-    separators: ["\n## ", "\n### ", "\n#### ", "\n", " ", ""], // 优先按 markdown 标题分割
+    chunkSize: 300,
+    chunkOverlap: 75,
+    separators: ["\n# ", "\n## ", "\n### ", "\n#### ", "\n", " ", ""], // 优先按 markdown 标题分割
     keepSeparator: true, // 保留分隔符，这样标题会保留在内容中
 });
 
@@ -30,7 +30,7 @@ const textSplitter = new RecursiveCharacterTextSplitter({
 const vectorStore = new MemoryVectorStore(
     new OllamaEmbeddings({
         baseUrl: "http://localhost:11434",
-        model: "deepseek-r1",
+        model: "qwen3:8b",
     }),
 );
 
